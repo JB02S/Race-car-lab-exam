@@ -1,26 +1,30 @@
 
-public class RaceCar {
+public class RaceCar implements Observer{
 	
 	private int metersTravelled = 0;
+	private Subject	raceWeather;
 	private String manufacturer;
 	private String carName;
-
+	private WeatherType weather;
+	private DrivingBehaviour drivingBehaviour;
 	
-	public RaceCar(String manufacturer, String carName) 
+	public RaceCar(String manufacturer, String carName, DrivingBehaviour drivingBehaviour, Subject raceWeather)
 	{
+		this.raceWeather = raceWeather;
+		raceWeather.registerObserver(this);
+		this.drivingBehaviour = drivingBehaviour;
 		this.manufacturer = manufacturer;
 		this.carName = carName;
-		
 	}
 
 	public void driveCar()
 	{
-		// to implement
+		metersTravelled+=drivingBehaviour.distance(weather);
 	}
 	
-	public void changeDrivingBehaviour()
+	public void changeDrivingBehaviour(DrivingBehaviour behaviour)
 	{
-		// to implement
+		this.drivingBehaviour = behaviour;
 	}
 
 	
@@ -28,6 +32,25 @@ public class RaceCar {
 	{
 		return carName + " built by " + manufacturer + " has travelled " + metersTravelled +" meters";
 	}
-	
 
+	public int getMetersTravelled()
+	{
+		return metersTravelled;
+	}
+
+	public String getCarName()
+	{
+		return carName;
+	}
+
+	public String getManufacturer()
+	{
+		return manufacturer;
+	}
+
+	@Override
+	public void update(WeatherType weather)
+	{
+		this.weather = weather;
+	}
 }

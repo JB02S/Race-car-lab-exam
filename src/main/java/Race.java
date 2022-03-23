@@ -15,8 +15,13 @@ public class Race
 	
 	private String getOutcome() 
 	{
-		// to implement
-		return null;
+		RaceCar largest = racers.get(0);
+		for (RaceCar racer : racers) {
+			if (racer.getMetersTravelled() > largest.getMetersTravelled()) {
+				largest = racer;
+			}
+		}
+		return "WINNER:"  + largest.getCarName() + ", " + largest.getManufacturer();
 	}
 
 	public void progressWeather() 
@@ -24,29 +29,41 @@ public class Race
 		raceWeather.changeWeather();
 	}
 	
-	public void changeCarBehaviour(int position) 
+	public void changeCarBehaviour(int position, DrivingBehaviour newBehaviour)
 	{
-		// to implement
-		
+		racers.get(position).changeDrivingBehaviour(newBehaviour);
 	}
 
-	public void raceStep() 
+	public void raceStep()
 	{
-
+		for (RaceCar racer : racers) {
+			racer.driveCar();
+			racer.getStatus();
+		}
 	}
 
 	public boolean isFinished()
 	{
-		// to implement
-		return true;
+		for (RaceCar racer : racers) {
+			if (racer.getMetersTravelled() > raceTrackDistance) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 
 	private void makeFourCars() 
 	{
-		// to implement
+		racers.add(new RaceCar("Fjord", "Car 1", new CautiousBehaviour(), raceWeather));
+		racers.add(new RaceCar("Fjord", "Car 2", new FastBehaviour(), raceWeather));
+		racers.add(new RaceCar("Furbi", "Car 3", new CautiousBehaviour(), raceWeather));
+		racers.add(new RaceCar("Furbi", "Car 4", new FastBehaviour(), raceWeather));
 	}
 
-	public void raceCars(){
+	public void raceCars()
+	{
 		int stepCount = 0;
 		while(!isFinished())
 		{
@@ -58,7 +75,6 @@ public class Race
 			}
 		}
 	}
-	
 
 	public static void main(String[]args)
 	{
